@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+#import "DetailViewController.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+{
+    IBOutlet UITableView *citiesTableView;
+}
 
 @end
 
@@ -21,13 +25,24 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return 1;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CitiesWeatherCellID"];
+    cell.textLabel.text = @"Hello";
     return cell;
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showDetailViewController"])
+    {
+        NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
+        DetailViewController *dvc = segue.destinationViewController;
+        dvc.navigationItem.title = @"Detail View";
+    }
 }
 
 @end

@@ -21,6 +21,7 @@
 		4109C1011922895E008D1C34 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4109C0E31922895E008D1C34 /* UIKit.framework */; };
 		4109C1091922895E008D1C34 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4109C1071922895E008D1C34 /* InfoPlist.strings */; };
 		4109C10B1922895E008D1C34 /* WeatherForecastTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4109C10A1922895E008D1C34 /* WeatherForecastTests.m */; };
+		4109C11619228D38008D1C34 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4109C11519228D38008D1C34 /* DetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		4109C1061922895E008D1C34 /* WeatherForecastTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WeatherForecastTests-Info.plist"; sourceTree = "<group>"; };
 		4109C1081922895E008D1C34 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4109C10A1922895E008D1C34 /* WeatherForecastTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeatherForecastTests.m; sourceTree = "<group>"; };
+		4109C11419228D38008D1C34 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		4109C11519228D38008D1C34 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 				4109C0EE1922895E008D1C34 /* AppDelegate.h */,
 				4109C0EF1922895E008D1C34 /* AppDelegate.m */,
 				4109C0F11922895E008D1C34 /* Main.storyboard */,
+				4109C11419228D38008D1C34 /* DetailViewController.h */,
+				4109C11519228D38008D1C34 /* DetailViewController.m */,
 				4109C0F41922895E008D1C34 /* ViewController.h */,
 				4109C0F51922895E008D1C34 /* ViewController.m */,
 				4109C0F71922895E008D1C34 /* Images.xcassets */,
@@ -252,6 +257,7 @@
 				4109C0F61922895E008D1C34 /* ViewController.m in Sources */,
 				4109C0F01922895E008D1C34 /* AppDelegate.m in Sources */,
 				4109C0EC1922895E008D1C34 /* main.m in Sources */,
+				4109C11619228D38008D1C34 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,13 +21,16 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CitiesWeatherCellID" id="our-Kn-Xie">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CitiesWeatherCellID" id="our-Kn-Xie">
                                         <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="our-Kn-Xie" id="1qs-u0-iDs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="GSi-Ze-ram" kind="push" identifier="showDetailViewController" id="mWj-13-yAG"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -39,10 +42,32 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="8b9-7R-Vqr"/>
+                    <connections>
+                        <outlet property="citiesTableView" destination="qTt-w2-s5T" id="BUW-4I-lbl"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="604" y="38"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="erQ-Sl-uDI">
+            <objects>
+                <viewController id="GSi-Ze-ram" customClass="DetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S0H-TE-Gve"/>
+                        <viewControllerLayoutGuide type="bottom" id="lJ3-B7-nin"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fHp-T6-7qP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="jQV-cx-v8y"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5HD-o6-kB9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1028" y="32"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8QX-I4-yEQ">
