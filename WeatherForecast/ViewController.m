@@ -15,6 +15,7 @@
     IBOutlet UITableView *citiesTableView;
     NSDictionary *current_observation;
     NSDictionary *display_location;
+    NSDictionary *forecast;
     NSMutableArray *citiesData;
 }
 
@@ -28,7 +29,9 @@
     self.navigationItem.title = @"Cities Weather";
     current_observation = [NSDictionary new];
     display_location = [NSDictionary new];
+    forecast = [NSDictionary new];
     citiesData = [NSMutableArray new];
+    
     [self extractingJSONData];
 }
 
@@ -48,22 +51,43 @@
             NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
             current_observation = citiesWeatherFirstLayer[@"current_observation"];
             display_location = current_observation[@"display_location"];
-            [self assigningWeatherData];
+            
+            forecast = citiesWeatherFirstLayer[@"forecast"];
+            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
+            NSArray *forecastday = txt_forecast[@"forecastday"];
+            
+            [citiesData removeAllObjects];
+            for (NSDictionary *forecastdayInfo in forecastday)
+            {
+                CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+                cwi.title = forecastdayInfo[@"title"];
+                cwi.period = [forecastdayInfo[@"period"]floatValue];
+                cwi.fcttext = forecastdayInfo[@"fcttext"];
+                cwi.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
+                cwi.temp_string = current_observation[@"temperature_string"];
+                cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+                cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+                cwi.city = display_location[@"city"];
+                [citiesData addObject:cwi];
+                NSLog(@"citiesData in Loop: %@",cwi.fcttext_metric);
+            }
+            
+//            [self assigningWeatherData];
             [citiesTableView reloadData];
         }
     }];
 }
 
--(void)assigningWeatherData
-{
-    CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-    cwi.temp_string = current_observation[@"temperature_string"];
-    cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-    cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-    cwi.city = display_location[@"city"];
-    [citiesData addObject:cwi];
-    NSLog(@"%@", citiesData);
-}
+//-(void)assigningWeatherData
+//{
+//    CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+//    cwi.temp_string = current_observation[@"temperature_string"];
+//    cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+//    cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+//    cwi.city = display_location[@"city"];
+//    [citiesData addObject:cwi];
+//    NSLog(@"%@", citiesData);
+//}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
