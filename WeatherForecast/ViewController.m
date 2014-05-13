@@ -14,6 +14,7 @@
 {
     IBOutlet UITableView *citiesTableView;
     NSDictionary *current_observation;
+    NSDictionary *display_location;
     NSMutableArray *citiesData;
 }
 
@@ -24,7 +25,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"Cities Weather";
     current_observation = [NSDictionary new];
+    display_location = [NSDictionary new];
     citiesData = [NSMutableArray new];
     [self extractingJSONData];
 }
@@ -35,11 +38,19 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
     {
-        NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-        current_observation = citiesWeatherFirstLayer[@"current_observation"];
-        
-        [self assigningWeatherData];
-        [citiesTableView reloadData];
+        if (connectionError)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrive data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [av show];
+        }
+        else
+        {
+            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
+            current_observation = citiesWeatherFirstLayer[@"current_observation"];
+            display_location = current_observation[@"display_location"];
+            [self assigningWeatherData];
+            [citiesTableView reloadData];
+        }
     }];
 }
 
@@ -49,6 +60,7 @@
     cwi.temp_string = current_observation[@"temperature_string"];
     cwi.temp_c = [current_observation[@"temp_c"]floatValue];
     cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+    cwi.city = display_location[@"city"];
     [citiesData addObject:cwi];
     NSLog(@"%@", citiesData);
 }
@@ -62,7 +74,7 @@
 {
     CitiesWeatherInformation *cwi = citiesData[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CitiesWeatherCellID"];
-    cell.textLabel.text = @"Hello";
+    cell.textLabel.text = cwi.city;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Current temperature: %@",cwi.temp_string];
     return cell;
 }
@@ -71,9 +83,11 @@
 {
     if ([segue.identifier isEqualToString:@"showDetailViewController"])
     {
-//        NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
+        NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
+        CitiesWeatherInformation *cwi = [citiesData objectAtIndex:indexPath.row];
         DetailViewController *dvc = segue.destinationViewController;
-        dvc.navigationItem.title = @"Detail View";
+        dvc.citiesWeatherInformation =cwi;
+        dvc.navigationItem.title = cwi.city;
     }
 }
 
