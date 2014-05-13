@@ -69,7 +69,7 @@
                 cwi.temp_f = [current_observation[@"temp_f"]floatValue];
                 cwi.city = display_location[@"city"];
                 [citiesData addObject:cwi];
-                NSLog(@"citiesData in Loop: %@",cwi.fcttext_metric);
+                NSLog(@"citiesData in Loop: %@",cwi.fcttext);
             }
             
 //            [self assigningWeatherData];
@@ -111,6 +111,7 @@
         CitiesWeatherInformation *cwi = [citiesData objectAtIndex:indexPath.row];
         DetailViewController *dvc = segue.destinationViewController;
         dvc.citiesWeatherInformation =cwi;
+        dvc.citiesData = citiesData;
         dvc.navigationItem.title = cwi.city;
     }
 }
