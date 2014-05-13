@@ -8,10 +8,13 @@
 
 #import "ViewController.h"
 #import "DetailViewController.h"
+#import "CitiesWeatherInformation.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 {
     IBOutlet UITableView *citiesTableView;
+    NSDictionary *current_observation;
+    NSMutableArray *citiesData;
 }
 
 @end
@@ -21,6 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    current_observation = [NSDictionary new];
+    citiesData = [NSMutableArray new];
     [self extractingJSONData];
 }
 
@@ -31,23 +36,34 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
     {
         NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-        NSDictionary *current_observation = citiesWeatherFirstLayer[@"current_observation"];
-
+        current_observation = citiesWeatherFirstLayer[@"current_observation"];
+        
+        [self assigningWeatherData];
+        [citiesTableView reloadData];
     }];
-    
 }
 
-
+-(void)assigningWeatherData
+{
+    CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+    cwi.temp_string = current_observation[@"temperature_string"];
+    cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+    cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+    [citiesData addObject:cwi];
+    NSLog(@"%@", citiesData);
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return citiesData.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CitiesWeatherInformation *cwi = citiesData[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CitiesWeatherCellID"];
     cell.textLabel.text = @"Hello";
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Current temperature: %@",cwi.temp_string];
     return cell;
 }
 
@@ -55,7 +71,7 @@
 {
     if ([segue.identifier isEqualToString:@"showDetailViewController"])
     {
-        NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
+//        NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
         DetailViewController *dvc = segue.destinationViewController;
         dvc.navigationItem.title = @"Detail View";
     }
