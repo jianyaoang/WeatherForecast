@@ -19,6 +19,7 @@
     NSMutableArray *citiesChicagoData;
     NSMutableArray *citiesDallasData;
     NSMutableArray *allCitiesData;
+    NSMutableArray *citiesForecastData;
 }
 
 @end
@@ -39,6 +40,7 @@
     [self extractingDallasJSONData];
     
     allCitiesData = [NSMutableArray new];
+    citiesForecastData = [NSMutableArray new];
 //    allCitiesData = [NSMutableArray arrayWithObjects:citiesChicagoData,citiesSeattleData, nil];
 //    NSLog(@"All Cities Data :%@",allCitiesData);
 }
@@ -66,25 +68,29 @@
             
             [citiesChicagoData removeAllObjects];
             
+            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+            cwi.temp_string = current_observation[@"temperature_string"];
+            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+            cwi.city = display_location[@"city"];
+            [allCitiesData addObject:cwi];
+            
             for (NSDictionary *forecastdayInfo in forecastday)
             {
-                CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
                 cwi.title = forecastdayInfo[@"title"];
                 cwi.icon = forecastdayInfo[@"icon"];
                 cwi.period = [forecastdayInfo[@"period"]floatValue];
                 cwi.fcttext = forecastdayInfo[@"fcttext"];
                 cwi.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                cwi.temp_string = current_observation[@"temperature_string"];
-                cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-                cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-                cwi.city = display_location[@"city"];
+                [citiesForecastData addObject:cwi];
 //                [citiesChicagoData addObject:cwi];
-                [allCitiesData addObject:cwi];
+//                [allCitiesData addObject:cwi];
 //                NSLog(@"citiesData in Loop: %@",cwi.fcttext);
             }
             NSLog(@"%d",allCitiesData.count);
             [citiesTableView reloadData];
         }
+
     }];
 }
 
@@ -111,20 +117,23 @@
             
             [citiesDallasData removeAllObjects];
             
+            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+            cwi.temp_string = current_observation[@"temperature_string"];
+            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+            cwi.city = display_location[@"city"];
+            [allCitiesData addObject:cwi];
+            
             for (NSDictionary *forecastdayInfo in forecastday)
             {
-                CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
                 cwi.title = forecastdayInfo[@"title"];
                 cwi.icon = forecastdayInfo[@"icon"];
                 cwi.period = [forecastdayInfo[@"period"]floatValue];
                 cwi.fcttext = forecastdayInfo[@"fcttext"];
                 cwi.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                cwi.temp_string = current_observation[@"temperature_string"];
-                cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-                cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-                cwi.city = display_location[@"city"];
+                [citiesForecastData addObject:cwi];
 //                [citiesDallasData addObject:cwi];
-                [allCitiesData addObject:cwi];
+//                [allCitiesData addObject:cwi];
             }
             NSLog(@"%d",allCitiesData.count);
             [citiesTableView reloadData];
@@ -153,10 +162,15 @@
         NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
         CitiesWeatherInformation *cwi = [allCitiesData objectAtIndex:indexPath.row];
         DetailViewController *dvc = segue.destinationViewController;
-        dvc.citiesWeatherInformation =cwi;
-        dvc.citiesData = allCitiesData;
+        dvc.citiesWeatherInformation = cwi;
+        dvc.citiesData = citiesForecastData;
         dvc.navigationItem.title = cwi.city;
     }
+//    UITableViewCell *cell = [UITableViewCell new];
+//    if ([cell.textLabel.text isEqualToString:@"Chicago"])
+//    {
+//        
+//    }
 }
 
 @end
