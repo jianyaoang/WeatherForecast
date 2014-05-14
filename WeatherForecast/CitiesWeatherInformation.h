@@ -11,6 +11,7 @@
 @interface CitiesWeatherInformation : NSObject
 
 @property (strong, nonatomic) NSString *temp_string;
+@property (strong, nonatomic) NSString *icon;
 @property float temp_f;
 @property float temp_c;
 @property (strong, nonatomic) NSString *city;

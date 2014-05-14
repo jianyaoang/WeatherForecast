@@ -16,7 +16,9 @@
     NSDictionary *current_observation;
     NSDictionary *display_location;
     NSDictionary *forecast;
-    NSMutableArray *citiesData;
+    NSMutableArray *citiesChicagoData;
+    NSMutableArray *citiesDallasData;
+    NSMutableArray *allCitiesData;
 }
 
 @end
@@ -30,12 +32,18 @@
     current_observation = [NSDictionary new];
     display_location = [NSDictionary new];
     forecast = [NSDictionary new];
-    citiesData = [NSMutableArray new];
+
+    citiesChicagoData = [NSMutableArray new];
+    citiesDallasData = [NSMutableArray new];
+    [self extractingChicagoJSONData];
+    [self extractingDallasJSONData];
     
-    [self extractingJSONData];
+    allCitiesData = [NSMutableArray new];
+//    allCitiesData = [NSMutableArray arrayWithObjects:citiesChicagoData,citiesSeattleData, nil];
+//    NSLog(@"All Cities Data :%@",allCitiesData);
 }
 
--(void)extractingJSONData
+-(void)extractingChicagoJSONData
 {
     NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/IL/Chicago.json"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -56,11 +64,13 @@
             NSDictionary *txt_forecast = forecast[@"txt_forecast"];
             NSArray *forecastday = txt_forecast[@"forecastday"];
             
-            [citiesData removeAllObjects];
+            [citiesChicagoData removeAllObjects];
+            
             for (NSDictionary *forecastdayInfo in forecastday)
             {
                 CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
                 cwi.title = forecastdayInfo[@"title"];
+                cwi.icon = forecastdayInfo[@"icon"];
                 cwi.period = [forecastdayInfo[@"period"]floatValue];
                 cwi.fcttext = forecastdayInfo[@"fcttext"];
                 cwi.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
@@ -68,35 +78,68 @@
                 cwi.temp_c = [current_observation[@"temp_c"]floatValue];
                 cwi.temp_f = [current_observation[@"temp_f"]floatValue];
                 cwi.city = display_location[@"city"];
-                [citiesData addObject:cwi];
-                NSLog(@"citiesData in Loop: %@",cwi.fcttext);
+//                [citiesChicagoData addObject:cwi];
+                [allCitiesData addObject:cwi];
+//                NSLog(@"citiesData in Loop: %@",cwi.fcttext);
             }
-            
-//            [self assigningWeatherData];
+            NSLog(@"%d",allCitiesData.count);
             [citiesTableView reloadData];
         }
     }];
 }
 
-//-(void)assigningWeatherData
-//{
-//    CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-//    cwi.temp_string = current_observation[@"temperature_string"];
-//    cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-//    cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-//    cwi.city = display_location[@"city"];
-//    [citiesData addObject:cwi];
-//    NSLog(@"%@", citiesData);
-//}
+-(void)extractingDallasJSONData
+{
+    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/TX/Dallas.json"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+    {
+        if (connectionError)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [av show];
+        }
+        else
+        {
+            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
+            current_observation = citiesWeatherFirstLayer[@"current_observation"];
+            display_location = current_observation[@"display_location"];
+            
+            forecast = citiesWeatherFirstLayer[@"forecast"];
+            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
+            NSArray *forecastday = txt_forecast[@"forecastday"];
+            
+            [citiesDallasData removeAllObjects];
+            
+            for (NSDictionary *forecastdayInfo in forecastday)
+            {
+                CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+                cwi.title = forecastdayInfo[@"title"];
+                cwi.icon = forecastdayInfo[@"icon"];
+                cwi.period = [forecastdayInfo[@"period"]floatValue];
+                cwi.fcttext = forecastdayInfo[@"fcttext"];
+                cwi.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
+                cwi.temp_string = current_observation[@"temperature_string"];
+                cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+                cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+                cwi.city = display_location[@"city"];
+//                [citiesDallasData addObject:cwi];
+                [allCitiesData addObject:cwi];
+            }
+            NSLog(@"%d",allCitiesData.count);
+            [citiesTableView reloadData];
+        }
+    }];
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return citiesData.count;
+    return allCitiesData.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CitiesWeatherInformation *cwi = citiesData[indexPath.row];
+    CitiesWeatherInformation *cwi = allCitiesData[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CitiesWeatherCellID"];
     cell.textLabel.text = cwi.city;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Current temperature: %@",cwi.temp_string];
@@ -108,10 +151,10 @@
     if ([segue.identifier isEqualToString:@"showDetailViewController"])
     {
         NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
-        CitiesWeatherInformation *cwi = [citiesData objectAtIndex:indexPath.row];
+        CitiesWeatherInformation *cwi = [allCitiesData objectAtIndex:indexPath.row];
         DetailViewController *dvc = segue.destinationViewController;
         dvc.citiesWeatherInformation =cwi;
-        dvc.citiesData = citiesData;
+        dvc.citiesData = allCitiesData;
         dvc.navigationItem.title = cwi.city;
     }
 }
