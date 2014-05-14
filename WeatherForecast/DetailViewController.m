@@ -9,9 +9,6 @@
 #import "DetailViewController.h"
 
 @interface DetailViewController () <UITableViewDataSource, UITableViewDelegate>
-{
-
-}
 
 @end
 
@@ -30,18 +27,18 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CitiesWeatherInformation *cwi = self.citiesData[indexPath.row];
+    City *city = self.city.forecast[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"WeatherForecastCellID"];
-    cell.textLabel.text = cwi.fcttext;
+    cell.textLabel.text = city.fcttext;
     cell.textLabel.numberOfLines = 0;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Day:%@ Status:%@ ",cwi.title, cwi.icon];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Day:%@ Status:%@ ",city.title, city.icon];
     return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CitiesWeatherInformation *cwi = self.citiesData[indexPath.row];
-    NSString *fcttext = cwi.fcttext;
+    City *city = self.citiesData[indexPath.row];
+    NSString *fcttext = city.fcttext;
     CGFloat width = 280;
     UIFont *font = [UIFont systemFontOfSize:10];
     NSAttributedString *attributedText = [[NSAttributedString alloc]initWithString:fcttext attributes:@{NSFontAttributeName: font}];

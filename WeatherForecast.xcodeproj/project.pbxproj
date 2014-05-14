@@ -23,6 +23,7 @@
 		4109C10B1922895E008D1C34 /* WeatherForecastTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4109C10A1922895E008D1C34 /* WeatherForecastTests.m */; };
 		4109C11619228D38008D1C34 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4109C11519228D38008D1C34 /* DetailViewController.m */; };
 		4145C1261922AE8E008042FC /* CitiesWeatherInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4145C1251922AE8E008042FC /* CitiesWeatherInformation.m */; };
+		41996E241923EDAA00830D99 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 41996E231923EDAA00830D99 /* City.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		4109C11519228D38008D1C34 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		4145C1241922AE8E008042FC /* CitiesWeatherInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitiesWeatherInformation.h; sourceTree = "<group>"; };
 		4145C1251922AE8E008042FC /* CitiesWeatherInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CitiesWeatherInformation.m; sourceTree = "<group>"; };
+		41996E221923EDAA00830D99 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
+		41996E231923EDAA00830D99 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,8 @@
 				4109C11519228D38008D1C34 /* DetailViewController.m */,
 				4109C0F41922895E008D1C34 /* ViewController.h */,
 				4109C0F51922895E008D1C34 /* ViewController.m */,
+				41996E221923EDAA00830D99 /* City.h */,
+				41996E231923EDAA00830D99 /* City.m */,
 				4145C1241922AE8E008042FC /* CitiesWeatherInformation.h */,
 				4145C1251922AE8E008042FC /* CitiesWeatherInformation.m */,
 				4109C0F71922895E008D1C34 /* Images.xcassets */,
@@ -261,6 +266,7 @@
 			files = (
 				4109C0F61922895E008D1C34 /* ViewController.m in Sources */,
 				4109C0F01922895E008D1C34 /* AppDelegate.m in Sources */,
+				41996E241923EDAA00830D99 /* City.m in Sources */,
 				4109C0EC1922895E008D1C34 /* main.m in Sources */,
 				4109C11619228D38008D1C34 /* DetailViewController.m in Sources */,
 				4145C1261922AE8E008042FC /* CitiesWeatherInformation.m in Sources */,
