@@ -41,8 +41,6 @@
     
     allCitiesData = [NSMutableArray new];
     citiesForecastData = [NSMutableArray new];
-//    allCitiesData = [NSMutableArray arrayWithObjects:citiesChicagoData,citiesSeattleData, nil];
-//    NSLog(@"All Cities Data :%@",allCitiesData);
 }
 
 -(void)extractingChicagoJSONData
@@ -85,10 +83,6 @@
                 city.fcttext = forecastdayInfo[@"fcttext"];
                 city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                 [cwi.forecast addObject:city];
-//                [citiesChicagoData addObject:cwi];
-//                [allCitiesData addObject:cwi];
-//                NSLog(@"citiesData in Loop: %@",cwi.fcttext);
-//                NSLog(@"city.forecast 1: %@ %d",city.fcttext, city.forecast.count);
             }
             [citiesTableView reloadData];
         }
@@ -137,8 +131,6 @@
                 city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                 [cwi.forecast addObject:city];
                 NSLog(@"city.forecast 2: %d",city.forecast.count);
-//                [citiesDallasData addObject:cwi];
-//                [allCitiesData addObject:cwi];
             }
             [citiesTableView reloadData];
         }
