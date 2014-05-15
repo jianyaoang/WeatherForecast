@@ -124,10 +124,7 @@
 				4109C0EE1922895E008D1C34 /* AppDelegate.h */,
 				4109C0EF1922895E008D1C34 /* AppDelegate.m */,
 				4109C0F11922895E008D1C34 /* Main.storyboard */,
-				4109C11419228D38008D1C34 /* DetailViewController.h */,
-				4109C11519228D38008D1C34 /* DetailViewController.m */,
-				4109C0F41922895E008D1C34 /* ViewController.h */,
-				4109C0F51922895E008D1C34 /* ViewController.m */,
+				41996E251925345B00830D99 /* ViewControllers */,
 				41996E221923EDAA00830D99 /* City.h */,
 				41996E231923EDAA00830D99 /* City.m */,
 				4145C1241922AE8E008042FC /* CitiesWeatherInformation.h */,
@@ -165,6 +162,17 @@
 				4109C1071922895E008D1C34 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		41996E251925345B00830D99 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				4109C11419228D38008D1C34 /* DetailViewController.h */,
+				4109C11519228D38008D1C34 /* DetailViewController.m */,
+				4109C0F41922895E008D1C34 /* ViewController.h */,
+				4109C0F51922895E008D1C34 /* ViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
