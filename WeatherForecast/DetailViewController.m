@@ -22,12 +22,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.citiesData.count;
+    return self.citiesWeatherInformation.forecast.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    City *city = self.city.forecast[indexPath.row];
+    City *city = self.citiesWeatherInformation.forecast[indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"WeatherForecastCellID"];
     cell.textLabel.text = city.fcttext;
     cell.textLabel.numberOfLines = 0;
@@ -37,13 +37,13 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    City *city = self.citiesData[indexPath.row];
+    City *city = self.citiesWeatherInformation.forecast[indexPath.row];
     NSString *fcttext = city.fcttext;
     CGFloat width = 280;
     UIFont *font = [UIFont systemFontOfSize:10];
     NSAttributedString *attributedText = [[NSAttributedString alloc]initWithString:fcttext attributes:@{NSFontAttributeName: font}];
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){width,CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin context:nil];
-    rect = CGRectInset(rect, -50, -50);
+    rect = CGRectInset(rect, -40, -60);
     CGSize size = rect.size;
     return size.height;
 }
