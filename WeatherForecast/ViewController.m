@@ -10,9 +10,11 @@
 #import "DetailViewController.h"
 #import "CitiesWeatherInformation.h"
 #import "City.h"
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 {
     IBOutlet UITableView *citiesTableView;
+    IBOutlet UISearchBar *cityZipCodeSearchBar;
+    
     NSDictionary *current_observation;
     NSDictionary *display_location;
     NSDictionary *forecast;
@@ -81,6 +83,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -128,6 +131,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -174,6 +178,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -221,6 +226,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -267,6 +273,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -313,6 +320,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -359,6 +367,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -405,6 +414,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -451,6 +461,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -497,6 +508,7 @@
             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
             cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
             [allCitiesData addObject:cwi];
             
             [cwi.forecast removeAllObjects];
@@ -529,6 +541,17 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Current temperature: %@",cwi.temp_string];
     return cell;
 }
+
+//-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+//{
+//    [self searchWithText:searchText];
+//}
+//
+//-(void)searchWithText:(NSString*)searchText
+//{
+//    NSString *urlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ac564405ca26fd91/geolookup/q/%@.json",];
+//    NSURL *url = [NSURL URLWithString:urlString];
+//}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

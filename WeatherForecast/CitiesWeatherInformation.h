@@ -15,6 +15,7 @@
 @property float temp_c;
 @property (strong, nonatomic) NSString *city;
 @property (strong, nonatomic) NSMutableArray *forecast;
+@property (strong, nonatomic) NSString *zip;
 
 
 
