@@ -542,16 +542,76 @@
     return cell;
 }
 
-//-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-//{
-//    [self searchWithText:searchText];
-//}
-//
-//-(void)searchWithText:(NSString*)searchText
-//{
-//    NSString *urlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ac564405ca26fd91/geolookup/q/%@.json",];
-//    NSURL *url = [NSURL URLWithString:urlString];
-//}
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    cityZipCodeSearchBar.placeholder = @"";
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [cityZipCodeSearchBar resignFirstResponder];
+    [citiesTableView reloadData];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self searchWithText:searchText];
+}
+
+-(void)searchWithText:(NSString*)searchText
+{
+    NSString *urlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ac564405ca26fd91/geolookup/forecast10day/conditions/q/%@.json", searchText];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+    {
+        if (connectionError)
+        {
+            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+            [av show];
+        }
+        else
+        {
+            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
+            current_observation = citiesWeatherFirstLayer[@"current_observation"];
+            display_location = current_observation[@"display_location"];
+            
+            forecast = citiesWeatherFirstLayer[@"forecast"];
+            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
+            NSArray *forecastday = txt_forecast[@"forecastday"];
+            
+            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
+            cwi.temp_string = current_observation[@"temperature_string"];
+            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+            cwi.city = display_location[@"city"];
+            cwi.zip = display_location[@"zip"];
+            [allCitiesData addObject:cwi];
+            
+            [cwi.forecast removeAllObjects];
+            
+            for (NSDictionary *forecastdayInfo in forecastday)
+            {
+                City *city = [City new];
+                city.title = forecastdayInfo[@"title"];
+                city.icon = forecastdayInfo[@"icon"];
+                city.period = [forecastdayInfo[@"period"]floatValue];
+                city.fcttext = forecastdayInfo[@"fcttext"];
+                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
+                [cwi.forecast addObject:city];
+            }
+            [citiesTableView reloadData];
+        }
+    }];
+}
+
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
