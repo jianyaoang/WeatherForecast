@@ -44,488 +44,65 @@
 
 -(void)extractingCitiesJSONData
 {
-    [self extractingChicagoJSONData];
-    [self extractingDallasJSONData];
-    [self extractingNewYorkJSONData];
-    [self extractingSeattleJSONData];
-    [self extractingWashingtonDCJSONData];
-    [self extractingCincinnatiJSONData];
-    [self extractingSanJoseJSONData];
-    [self extractingCupertinoJSONData];
-    [self extractingSanDiegoJSONData];
-    [self extractingLasVegasJSONData];
+    [self extractCityByName:@"Chicago" withState:@"IL"];
+    [self extractCityByName:@"Dallas" withState:@"TX"];
+    [self extractCityByName:@"New_York" withState:@"NY"];
+    [self extractCityByName:@"Seattle" withState:@"WA"];
+    [self extractCityByName:@"Washington" withState:@"DC"];
+    [self extractCityByName:@"Cincinnati" withState:@"OH"];
+    [self extractCityByName:@"San_Jose" withState:@"CA"];
+    [self extractCityByName:@"Cupertino" withState:@"CA"];
+    [self extractCityByName:@"San_Diego" withState:@"CA"];
+    [self extractCityByName:@"Las_Vegas" withState:@"NV"];
 }
 
--(void)extractingChicagoJSONData
+-(void)extractCityByName:(NSString *)cityName withState:(NSString *)stateID
 {
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/IL/Chicago.json"];
+    NSString *urlString = [NSString stringWithFormat:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/%@/%@.json",stateID, cityName];
+    NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrive data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-
-    }];
-}
-
--(void)extractingDallasJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/TX/Dallas.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingNewYorkJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/NY/New_York.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-
-        }
-    }];
-}
-
--(void)extractingSeattleJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/WA/Seattle.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingWashingtonDCJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/DC/Washington.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingCincinnatiJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/OH/Cincinnati.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingSanJoseJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/CA/San_Jose.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingCupertinoJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/CA/Cupertino.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingSanDiegoJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/CA/San_Diego.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
-}
-
--(void)extractingLasVegasJSONData
-{
-    NSURL *url = [NSURL URLWithString:@"http://api.wunderground.com/api/ac564405ca26fd91/forecast10day/conditions/q/NV/Las_Vegas.json"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError)
-        {
-            UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrieve data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles: nil];
-            [av show];
-        }
-        else
-        {
-            NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            current_observation = citiesWeatherFirstLayer[@"current_observation"];
-            display_location = current_observation[@"display_location"];
-            
-            forecast = citiesWeatherFirstLayer[@"forecast"];
-            NSDictionary *txt_forecast = forecast[@"txt_forecast"];
-            NSArray *forecastday = txt_forecast[@"forecastday"];
-            
-            CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
-            cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
-            cwi.temp_string = current_observation[@"temperature_string"];
-            cwi.temp_c = [current_observation[@"temp_c"]floatValue];
-            cwi.temp_f = [current_observation[@"temp_f"]floatValue];
-            cwi.city = display_location[@"city"];
-            cwi.zip = display_location[@"zip"];
-            [allCitiesData addObject:cwi];
-            
-            [cwi.forecast removeAllObjects];
-            
-            for (NSDictionary *forecastdayInfo in forecastday)
-            {
-                City *city = [City new];
-                city.title = forecastdayInfo[@"title"];
-                city.icon = forecastdayInfo[@"icon"];
-                city.period = [forecastdayInfo[@"period"]floatValue];
-                city.fcttext = forecastdayInfo[@"fcttext"];
-                city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
-                [cwi.forecast addObject:city];
-            }
-            [citiesTableView reloadData];
-        }
-    }];
+     {
+         if (connectionError)
+         {
+             UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Connection Error" message:@"Unable to retrive data" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+             [av show];
+         }
+         else
+         {
+             NSDictionary *citiesWeatherFirstLayer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
+             current_observation = citiesWeatherFirstLayer[@"current_observation"];
+             display_location = current_observation[@"display_location"];
+             
+             forecast = citiesWeatherFirstLayer[@"forecast"];
+             NSDictionary *txt_forecast = forecast[@"txt_forecast"];
+             NSArray *forecastday = txt_forecast[@"forecastday"];
+             
+             CitiesWeatherInformation *cwi = [CitiesWeatherInformation new];
+             cwi.forecast = [[NSMutableArray alloc] initWithCapacity:10];
+             cwi.temp_string = current_observation[@"temperature_string"];
+             cwi.temp_c = [current_observation[@"temp_c"]floatValue];
+             cwi.temp_f = [current_observation[@"temp_f"]floatValue];
+             cwi.city = display_location[@"city"];
+             cwi.zip = display_location[@"zip"];
+             [allCitiesData addObject:cwi];
+             
+             [cwi.forecast removeAllObjects];
+             
+             for (NSDictionary *forecastdayInfo in forecastday)
+             {
+                 City *city = [City new];
+                 city.title = forecastdayInfo[@"title"];
+                 city.icon = forecastdayInfo[@"icon"];
+                 city.period = [forecastdayInfo[@"period"]floatValue];
+                 city.fcttext = forecastdayInfo[@"fcttext"];
+                 city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
+                 [cwi.forecast addObject:city];
+             }
+             [citiesTableView reloadData];
+         }
+         
+     }];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
