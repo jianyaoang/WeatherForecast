@@ -186,6 +186,8 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    [cityZipCodeSearchBar resignFirstResponder];
+    
     if ([segue.identifier isEqualToString:@"showDetailViewController"])
     {
         NSIndexPath *indexPath = [citiesTableView indexPathForCell:sender];
