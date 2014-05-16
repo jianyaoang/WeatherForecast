@@ -39,21 +39,18 @@
     allCitiesData = [NSMutableArray new];
     citiesForecastData = [NSMutableArray new];
     
-    [self extractingCitiesJSONData];
+    NSDictionary *citiesAndStates = @{@"Chicago": @"IL",@"Dallas":@"TX",@"New_York":@"NY", @"Seattle":@"WA",@"Washington":@"DC", @"Cincinnati":@"OH", @"San_Jose":@"CA", @"Cupertino":@"CA", @"San_Diego":@"CA", @"Las_Vegas":@"NV"};
+    
+    [self extractingCitiesJSONData:citiesAndStates];
 }
 
--(void)extractingCitiesJSONData
+-(void)extractingCitiesJSONData:(NSDictionary *) citiesAndStates
 {
-    [self extractCityByName:@"Chicago" withState:@"IL"];
-    [self extractCityByName:@"Dallas" withState:@"TX"];
-    [self extractCityByName:@"New_York" withState:@"NY"];
-    [self extractCityByName:@"Seattle" withState:@"WA"];
-    [self extractCityByName:@"Washington" withState:@"DC"];
-    [self extractCityByName:@"Cincinnati" withState:@"OH"];
-    [self extractCityByName:@"San_Jose" withState:@"CA"];
-    [self extractCityByName:@"Cupertino" withState:@"CA"];
-    [self extractCityByName:@"San_Diego" withState:@"CA"];
-    [self extractCityByName:@"Las_Vegas" withState:@"NV"];
+    for (NSString *key in citiesAndStates)
+    {
+        [self extractCityByName:key withState:citiesAndStates[key]];
+    }
+
 }
 
 -(void)extractCityByName:(NSString *)cityName withState:(NSString *)stateID
