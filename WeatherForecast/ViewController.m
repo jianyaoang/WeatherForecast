@@ -171,6 +171,11 @@
                  cwi.zip = display_location[@"zip"];
                  [allCitiesData addObject:cwi];
                  
+                 if (current_observation == nil)
+                 {
+                     [allCitiesData removeLastObject];
+                 }
+                 
                  [cwi.forecast removeAllObjects];
                  
                  for (NSDictionary *forecastdayInfo in forecastday)
@@ -183,7 +188,6 @@
                      city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                      [cwi.forecast addObject:city];
                  }
-//                 [citiesTableView reloadData];
                  if (!(current_observation == nil && display_location == nil))
                  {
                      [citiesTableView reloadData];
