@@ -117,6 +117,11 @@
     cityZipCodeSearchBar.text = @"";
 }
 
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    cityZipCodeSearchBar.placeholder = @"enter city zip code";
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [cityZipCodeSearchBar resignFirstResponder];
