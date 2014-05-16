@@ -183,7 +183,11 @@
                      city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                      [cwi.forecast addObject:city];
                  }
-                 [citiesTableView reloadData];
+//                 [citiesTableView reloadData];
+                 if (!(current_observation == nil && display_location == nil))
+                 {
+                     [citiesTableView reloadData];
+                 }
              }
             }];
     }
