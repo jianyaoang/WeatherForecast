@@ -31,7 +31,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"WeatherForecastCellID"];
     cell.textLabel.text = city.fcttext;
     cell.textLabel.numberOfLines = 0;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Day:%@ Status:%@ ",city.title, city.icon];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"Day:%@     Status:%@ ",city.title, city.icon];
     return cell;
 }
 

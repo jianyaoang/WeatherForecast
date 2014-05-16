@@ -188,7 +188,7 @@
                      city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                      [cwi.forecast addObject:city];
                  }
-                     [citiesTableView reloadData];
+                 [citiesTableView reloadData];
              }
             }];
     }
@@ -197,7 +197,6 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [cityZipCodeSearchBar resignFirstResponder];
-    cityZipCodeSearchBar.placeholder = @"enter city zip code";
     
     if ([segue.identifier isEqualToString:@"showDetailViewController"])
     {
