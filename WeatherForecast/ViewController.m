@@ -183,7 +183,7 @@
                      City *city = [City new];
                      city.title = forecastdayInfo[@"title"];
                      city.icon = forecastdayInfo[@"icon"];
-                     city.period = [forecastdayInfo[@"period"]floatValue];
+                     city.period = [forecastdayInfo[@"period"]doubleValue];
                      city.fcttext = forecastdayInfo[@"fcttext"];
                      city.fcttext_metric = forecastdayInfo[@"fcttext_metric"];
                      [cwi.forecast addObject:city];

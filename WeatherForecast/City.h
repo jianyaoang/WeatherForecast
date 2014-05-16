@@ -10,7 +10,7 @@
 
 @interface City : NSObject
 @property (strong, nonatomic) NSMutableArray *forecast;
-@property float period;
+@property double period;
 @property (strong, nonatomic) NSString *icon;
 @property (strong, nonatomic) NSString *title;
 @property (strong,nonatomic)  NSString *fcttext;

@@ -17,7 +17,4 @@
 @property (strong, nonatomic) NSMutableArray *forecast;
 @property (strong, nonatomic) NSString *zip;
 
-
-
-
 @end
