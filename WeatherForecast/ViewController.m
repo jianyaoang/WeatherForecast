@@ -18,10 +18,7 @@
     NSDictionary *current_observation;
     NSDictionary *display_location;
     NSDictionary *forecast;
-    NSMutableArray *citiesChicagoData;
-    NSMutableArray *citiesDallasData;
     NSMutableArray *allCitiesData;
-    NSMutableArray *citiesForecastData;
 }
 @end
 
@@ -37,7 +34,6 @@
     forecast = [NSDictionary new];
 
     allCitiesData = [NSMutableArray new];
-    citiesForecastData = [NSMutableArray new];
     
     NSDictionary *citiesAndStates = @{@"Chicago": @"IL",@"Dallas":@"TX",@"New_York":@"NY", @"Seattle":@"WA",@"Washington":@"DC", @"Cincinnati":@"OH", @"San_Jose":@"CA", @"Cupertino":@"CA", @"San_Diego":@"CA", @"Las_Vegas":@"NV"};
     
@@ -50,7 +46,6 @@
     {
         [self extractCityByName:key withState:citiesAndStates[key]];
     }
-
 }
 
 -(void)extractCityByName:(NSString *)cityName withState:(NSString *)stateID
@@ -119,6 +114,7 @@
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     cityZipCodeSearchBar.placeholder = @"";
+    cityZipCodeSearchBar.text = @"";
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

@@ -12,6 +12,5 @@
 @interface DetailViewController : UIViewController
 @property CitiesWeatherInformation *citiesWeatherInformation;
 @property City *city;
-@property NSMutableArray *citiesData;
-@property NSMutableArray *cityForecast;
+
 @end
